@@ -20,8 +20,10 @@ const Chat = ({ location }) => {
 
 	useEffect(() => {
 		let { name, room } = queryString.parse(location.search);
-
-		socket = io(END_POINT);
+		console.log("room,name", name, room)
+		socket = io(END_POINT, {
+			transports: ["websocket"]
+		});
 
 		setName(name);
 		setRoom(room);
@@ -50,7 +52,9 @@ const Chat = ({ location }) => {
 		event.preventDefault();
 
 		if (message) {
+			console.log("message", message);
 			socket.emit("sendMessage", message);
+			console.log("socket.emit", socket.emit(message));
 			setMessage("");
 		}
 	};

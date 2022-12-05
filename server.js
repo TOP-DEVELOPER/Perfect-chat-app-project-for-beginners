@@ -10,16 +10,20 @@ PORT = process.env.PORT || 5000;
 
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server, { wsEngine: "ws" });
+const io = socketio(server);
 
 app.use(router);
 app.use(cors());
 
 io.on("connection", socket => {
+	io.origins('*:*');
+	console.log("socket",socket);
 	console.log("connected");
 
 	socket.on("join", ({ name, room }) => {
+		console.log("Join");
 		const { error, user } = addUser({ id: socket.id, name, room });
+		
 		if (error) {
 			return;
 		}
